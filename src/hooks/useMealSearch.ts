@@ -60,11 +60,18 @@ export function useMealSearch(
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter" && activeIndex >= 0) {
-      e.preventDefault();
-      const chosen = suggestions[activeIndex];
-      if (chosen) onSelect(chosen.strIngredient);
+    } else if (e.key === "Enter") {
+      if (activeIndex >= 0) {
+        // A suggestion is highlighted, select it and block form submit
+        e.preventDefault();
+        const chosen = suggestions[activeIndex];
+        if (chosen) onSelect(chosen.strIngredient);
+      } else {
+        // Suggestions are visible but none highlighted, just close the dropdown and let the form submit naturally
+        closeSuggestions();
+      }
     } else if (e.key === "Escape") {
+      e.preventDefault();
       setActive(-1);
       setTermRaw("");
     }
