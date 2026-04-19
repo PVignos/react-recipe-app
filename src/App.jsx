@@ -1,9 +1,29 @@
+import ErrorBoundary from "./components/ui/ErrorBoundary";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import Spinner from "./components/ui/Spinner.tsx";
+import NavBar from "./components/common/NavBar.tsx";
+
+// Lazy load pages — each becomes its own JS chunk.
+const WizardPage = lazy(() => import("./pages/WizardPage"));
+const RecipePage = lazy(() => import("./pages/RecipePage"));
+const HistoryPage = lazy(() => import("./pages/HistoryPage"));
+
 function App() {
   return (
-    <>
-      <h1 className="h-screen flex text-2xl items-center justify-center text-red-500 rotate-90 font-bold">:-)</h1>
-    </>
-  )
+    <div className="min-h-screen bg-neutral-50">
+      <NavBar />
+      <ErrorBoundary>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path="/" element={<WizardPage />} />
+            <Route path="/recipe/:id" element={<RecipePage />} />
+            <Route path="/history" element={<HistoryPage />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
+    </div>
+  );
 }
 
-export default App
+export default App;

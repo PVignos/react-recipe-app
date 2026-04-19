@@ -51,3 +51,19 @@ export interface HistoryEntry {
   area: string;
   ingredient: string;
 }
+
+// Step
+export const Step = {
+  One: 1,
+  Two: 2,
+  Result: "result",
+} as const;
+
+export type Step = (typeof Step)[keyof typeof Step];
+
+// HistoryFilter
+export enum HistoryFilter {
+  All = "all",
+  Liked = "liked",
+  Disliked = "disliked",
+}
