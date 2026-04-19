@@ -1,11 +1,9 @@
 import { useAppStore } from "../../store/useAppStore";
 import { useQuery } from "@tanstack/react-query";
-import type { Area, Ingredient } from "../../types/meal";
+import type { Area } from "../../types/meal";
 import { QK } from "../../services/query";
 import { mealApi } from "../../services/meal";
 import Spinner from "../ui/Spinner";
-import { fetchIngredientsForArea } from "../../hooks/useMealSearch";
-import { queryClient } from "../../services/queryClient";
 
 function StepOne() {
   const area = useAppStore((s) => s.formData.area);
@@ -24,15 +22,6 @@ function StepOne() {
 
   const handleAreaChange = (value: string) => {
     updateForm({ area: value });
-    // Prefetch area ingredients immediately — by the time the user reaches
-    // StepTwo the suggestions are already in cache, zero loading state.
-    if (value) {
-      queryClient.prefetchQuery<Ingredient[]>({
-        queryKey: QK.ingredientsByArea(value),
-        queryFn: () => fetchIngredientsForArea(value),
-        staleTime: Infinity,
-      });
-    }
   };
 
   if (isLoading) return <Spinner />;

@@ -13,8 +13,10 @@ function WizardPage() {
   // If step is 'result' but we're on the wizard route, the store is stale.
   // Reset to One so the user sees the form instead of a blank page.
   useEffect(() => {
-    if (step === Step.Result) reset();
-  }, [step, reset]);
+    if (step === Step.Result) {
+      reset();
+    }
+  }, []);
 
   useSeoMeta({
     title: "Find a Recipe — Recipe Finder",

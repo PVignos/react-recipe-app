@@ -48,6 +48,12 @@ function StepTwo() {
         (m): m is NonNullable<typeof m> => m !== null,
       );
       setPool(valid);
+      console.log(
+        ">>> pool set:",
+        valid.length,
+        useAppStore.getState().candidates.length,
+      );
+
       // Navigate to the first result — URL is now shareable.
       if (valid[0]) navigate(`/recipe/${valid[0].idMeal}`);
     } catch (e) {

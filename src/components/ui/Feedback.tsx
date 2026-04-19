@@ -35,16 +35,22 @@ function Feedback({ recipe }: FeedbackProps) {
         <button
           onClick={() => handle(true)}
           aria-pressed={currentRating === true}
-          className={`flex-1 font-medium py-2 rounded-xl text-sm transition-colors border ${currentRating === true ? "bg-green-500 text-white border-green-500" : "bg-green-50 hover:bg-green-100 text-green-700 border-transparent"}`}
+          className={`flex-1 font-medium py-2 rounded-xl text-sm transition-colors border ${currentRating === true ? "bg-green-600 text-white border-green-600" : "bg-green-100 hover:bg-green-150 text-green-800 border-transparent"}`}
         >
-          {currentRating === true ? "✓ Liked" : "Yes, I like it"}
+          {currentRating === true ? "✔ Liked" : "Yes, I like it"}
         </button>
         <button
           onClick={() => handle(false)}
           aria-pressed={currentRating === false}
           className={`flex-1 font-medium py-2 rounded-xl text-sm transition-colors border ${currentRating === false ? "bg-red-500 text-white border-red-500" : "bg-red-50 hover:bg-red-100 text-red-600 border-transparent"}`}
         >
-          {currentRating === false ? "✓ Disliked" : "No, not for me"}
+          {currentRating === false ? (
+            <>
+              <b>X</b> Disliked
+            </>
+          ) : (
+            "No, not for me"
+          )}
         </button>
       </div>
       {currentRating !== undefined && (
