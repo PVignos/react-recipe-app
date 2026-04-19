@@ -20,8 +20,9 @@ function StepOne() {
     staleTime: Infinity,
   });
 
-  const handleAreaChange = (value: string) => {
-    updateForm({ area: value });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (area) setStep(2);
   };
 
   if (isLoading) return <Spinner />;
@@ -29,7 +30,7 @@ function StepOne() {
     return <p className="text-sm text-red-500">Failed to load cuisines.</p>;
 
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
         Step 1 of 2
       </p>
@@ -43,7 +44,7 @@ function StepOne() {
         <select
           id="area"
           value={area}
-          onChange={(e) => handleAreaChange(e.target.value)}
+          onChange={(e) => updateForm({ area: e.target.value })}
           className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
         >
           <option value="">Select a cuisine…</option>
@@ -55,13 +56,13 @@ function StepOne() {
         </select>
       </div>
       <button
-        onClick={() => setStep(2)}
+        type="submit"
         disabled={!area}
         className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors"
       >
         Next
       </button>
-    </div>
+    </form>
   );
 }
 

@@ -30,7 +30,10 @@ function StepTwo() {
     closeSuggestions,
   } = useMealSearch((name) => updateForm({ ingredient: name }));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!ingredient || loading) return;
+
     setLoading(true);
     setToast(null);
     setNoResults(false);
@@ -40,7 +43,7 @@ function StepTwo() {
         setNoResults(true);
         return;
       }
-      // Store only summaries — full details are fetched lazily per recipe.
+      // Store only summaries — full details are fetched lazily per recipe
       setPool(pool);
       navigate(`/recipe/${pool[0]!.idMeal}`);
     } catch (e) {
@@ -52,7 +55,7 @@ function StepTwo() {
 
   return (
     <>
-      <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
           Step 2 of 2
         </p>
@@ -64,7 +67,7 @@ function StepTwo() {
             Search an ingredient
             {searchLoading && (
               <span className="ml-2 text-xs font-normal text-neutral-400">
-                Loading&mldr;
+                Loading...
               </span>
             )}
           </label>
@@ -84,7 +87,7 @@ function StepTwo() {
               onKeyDown={handleKeyDown}
               onBlur={() => setTimeout(closeSuggestions, 150)}
               placeholder={
-                searchLoading ? "Loading&mldr;" : "e.g. Chicken, Salmon&mldr;"
+                searchLoading ? "Loading..." : "e.g. Chicken, Salmon..."
               }
               disabled={searchLoading}
               className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50"
@@ -103,7 +106,11 @@ function StepTwo() {
                     role="option"
                     aria-selected={i === activeIndex}
                     onMouseDown={() => onSelect(s.strIngredient)}
-                    className={`px-4 py-2 text-sm cursor-pointer ${i === activeIndex || term === s.strIngredient ? "bg-orange-50 text-orange-700" : "hover:bg-orange-50"}`}
+                    className={`px-4 py-2 text-sm cursor-pointer ${
+                      i === activeIndex
+                        ? "bg-orange-50 text-orange-700"
+                        : "hover:bg-orange-50"
+                    }`}
                   >
                     {s.strIngredient}
                   </li>
@@ -113,27 +120,28 @@ function StepTwo() {
           </div>
         </div>
         {noResults && (
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-neutral-500" role="status">
             No recipes found. Try a different ingredient.
           </p>
         )}
         {loading && <Spinner />}
         <div className="flex gap-3">
           <button
+            type="button"
             onClick={() => setStep(Step.One)}
             className="flex-1 border border-neutral-200 text-neutral-600 font-medium py-3 rounded-xl hover:bg-neutral-50 transition-colors"
           >
             Back
           </button>
           <button
-            onClick={handleSubmit}
+            type="submit"
             disabled={!ingredient || ingredient !== term || loading}
             className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors"
           >
             Find recipe
           </button>
         </div>
-      </div>
+      </form>
       {toast && <Toast message={toast} onDismiss={() => setToast(null)} />}
     </>
   );
