@@ -3,7 +3,6 @@ import { useAppStore } from "../../store/useAppStore";
 import { useState } from "react";
 import { useMealSearch } from "../../hooks/useMealSearch";
 import { getSuggestions } from "../../services/suggestion";
-import { mealApi } from "../../services/meal";
 import Spinner from "../ui/Spinner";
 import { Step } from "../../types/meal";
 import Toast from "../ui/Toast";
@@ -29,7 +28,7 @@ function StepTwo() {
     handleKeyDown,
     onSelect,
     closeSuggestions,
-  } = useMealSearch(area, (name) => updateForm({ ingredient: name }));
+  } = useMealSearch((name) => updateForm({ ingredient: name }));
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -41,21 +40,9 @@ function StepTwo() {
         setNoResults(true);
         return;
       }
-      const detailed = await Promise.all(
-        pool.map((m) => mealApi.lookup(m.idMeal)),
-      );
-      const valid = detailed.filter(
-        (m): m is NonNullable<typeof m> => m !== null,
-      );
-      setPool(valid);
-      console.log(
-        ">>> pool set:",
-        valid.length,
-        useAppStore.getState().candidates.length,
-      );
-
-      // Navigate to the first result — URL is now shareable.
-      if (valid[0]) navigate(`/recipe/${valid[0].idMeal}`);
+      // Store only summaries — full details are fetched lazily per recipe.
+      setPool(pool);
+      navigate(`/recipe/${pool[0]!.idMeal}`);
     } catch (e) {
       setToast(e instanceof Error ? e.message : "Something went wrong");
     } finally {
@@ -77,7 +64,7 @@ function StepTwo() {
             Search an ingredient
             {searchLoading && (
               <span className="ml-2 text-xs font-normal text-neutral-400">
-                Loading {area} ingredients…
+                Loading&mldr;
               </span>
             )}
           </label>
@@ -96,7 +83,9 @@ function StepTwo() {
               onChange={(e) => setTerm(e.target.value)}
               onKeyDown={handleKeyDown}
               onBlur={() => setTimeout(closeSuggestions, 150)}
-              placeholder={searchLoading ? "Loading…" : "e.g. Chicken, Salmon…"}
+              placeholder={
+                searchLoading ? "Loading&mldr;" : "e.g. Chicken, Salmon&mldr;"
+              }
               disabled={searchLoading}
               className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50"
             />
@@ -114,7 +103,7 @@ function StepTwo() {
                     role="option"
                     aria-selected={i === activeIndex}
                     onMouseDown={() => onSelect(s.strIngredient)}
-                    className={`px-4 py-2 text-sm cursor-pointer ${i === activeIndex ? "bg-orange-50 text-orange-700" : "hover:bg-orange-50"}`}
+                    className={`px-4 py-2 text-sm cursor-pointer ${i === activeIndex || term === s.strIngredient ? "bg-orange-50 text-orange-700" : "hover:bg-orange-50"}`}
                   >
                     {s.strIngredient}
                   </li>
@@ -138,8 +127,8 @@ function StepTwo() {
           </button>
           <button
             onClick={handleSubmit}
-            disabled={!ingredient || loading}
-            className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 text-white font-medium py-3 rounded-xl transition-colors"
+            disabled={!ingredient || ingredient !== term || loading}
+            className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors"
           >
             Find recipe
           </button>

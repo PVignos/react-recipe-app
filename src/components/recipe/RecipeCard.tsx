@@ -15,11 +15,8 @@ function RecipeCard({ recipe }: RecipeCardProps) {
   const reset = useAppStore((s) => s.reset);
 
   const handleNext = () => {
-    nextRecipe();
-    // Sync URL to the next candidate — replace so Back button skips duplicates.
-    const nextIndex = (candidateIndex + 1) % candidates.length;
-    const nextMeal = candidates[nextIndex];
-    if (nextMeal) navigate(`/recipe/${nextMeal.idMeal}`, { replace: true });
+    const next = nextRecipe();
+    if (next) navigate(`/recipe/${next.idMeal}`, { replace: true });
   };
 
   return (
@@ -48,7 +45,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
               href={recipe.strSource}
               target="_blank"
               rel="noreferrer"
-              className="inline-block text-sm text-orange-500 hover:underline"
+              className="text-sm text-orange-500 hover:underline"
             >
               &#128279; View full recipe →
             </a>
@@ -58,7 +55,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
               href={recipe.strYoutube}
               target="_blank"
               rel="noreferrer"
-              className="inline-block text-sm text-neutral-400 hover:underline"
+              className="text-sm text-neutral-400 hover:underline"
             >
               &#9654; Watch on YouTube →
             </a>
@@ -70,7 +67,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
         {candidates.length > 1 && (
           <button
             onClick={handleNext}
-            className="flex-1 border border-neutral-200 text-neutral-600 text-sm font-medium py-2 rounded-xl hover:bg-neutral-50"
+            className="flex-1 border border-neutral-200 text-neutral-600 text-sm font-medium py-2 rounded-xl hover:bg-neutral-50 transition-colors"
           >
             New Idea ({candidateIndex + 1}/{candidates.length})
           </button>
@@ -80,7 +77,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
             reset();
             navigate("/");
           }}
-          className="flex-1 border border-neutral-200 text-neutral-600 text-sm font-medium py-2 rounded-xl hover:bg-neutral-50"
+          className="flex-1 border border-neutral-200 text-neutral-600 text-sm font-medium py-2 rounded-xl hover:bg-neutral-50 transition-colors"
         >
           Start over
         </button>

@@ -10,21 +10,20 @@ interface UseMealSearchReturn {
   setTerm: (term: string) => void;
   suggestions: Ingredient[];
   isLoading: boolean;
-  activeIndex: number; // -1 = no selection
+  activeIndex: number;
   handleKeyDown: (e: ReactKeyboardEvent<HTMLInputElement>) => void;
   onSelect: (name: string) => void;
   closeSuggestions: () => void;
 }
 
 export function useMealSearch(
-  _area: string,
   onCommit: (name: string) => void,
 ): UseMealSearchReturn {
   const [term, setTermRaw] = useState("");
   const [activeIndex, setActive] = useState(-1);
   const deferred = useDeferredValue(term);
 
-  // Single request for the full ingredient list — no per-area fetching.
+  // Single request for the full ingredient list — cached forever.
   const { data: all = [], isLoading } = useQuery<Ingredient[]>({
     queryKey: QK.ingredients,
     queryFn: mealApi.listIngredients,

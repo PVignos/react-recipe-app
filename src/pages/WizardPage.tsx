@@ -20,8 +20,7 @@ function WizardPage() {
 
   useSeoMeta({
     title: "Find a Recipe — Recipe Finder",
-    description:
-      "Pick a cuisine and an ingredient to get a personalised recipe.",
+    description: "Pick a area and an ingredient to get a personalised recipe.",
   });
 
   return (

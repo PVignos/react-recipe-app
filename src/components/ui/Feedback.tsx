@@ -15,14 +15,18 @@ function Feedback({ recipe }: FeedbackProps) {
   const currentRating = existing?.liked;
 
   const handle = (liked: boolean) => {
+    // If we arrived from History, formData is empty — fall back to the previously stored area/ingredient for this recipe
+    const area = formData.area || existing?.area || "";
+    const ingredient = formData.ingredient || existing?.ingredient || "";
+
     upsertEntry({
       id: recipe.idMeal,
       title: recipe.strMeal,
       thumb: recipe.strMealThumb,
       liked,
       timestamp: Date.now(),
-      area: formData.area,
-      ingredient: formData.ingredient,
+      area,
+      ingredient,
     });
   };
 

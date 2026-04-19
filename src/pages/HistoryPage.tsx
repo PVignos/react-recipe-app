@@ -38,12 +38,12 @@ function HistoryPage() {
   return (
     <PageLayout title="History">
       {history.length === 0 ? (
-        <p className="text-sm text-neutral-400">
-          No recipes rated yet.
+        <div className="flex justify-between text-sm text-neutral-400">
+          <div>No recipes rated yet.</div>
           <Link to="/" className="text-orange-500 hover:underline">
             Find one →
           </Link>
-        </p>
+        </div>
       ) : (
         <>
           <div className="flex items-center justify-between mb-4">
