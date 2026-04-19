@@ -16,21 +16,20 @@ function StepTwo() {
   const setStep = useAppStore((s) => s.setStep);
   const setPool = useAppStore((s) => s.setPool);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [noResults, setNoResults] = useState<boolean>(false);
+  const [noResults, setNoResults] = useState(false);
 
   const {
     term,
     setTerm,
     suggestions,
     isLoading: searchLoading,
-  } = useMealSearch(area);
-
-  const selectIngredient = (name: string) => {
-    updateForm({ ingredient: name });
-    setTerm(name);
-  };
+    activeIndex,
+    handleKeyDown,
+    onSelect,
+    closeSuggestions,
+  } = useMealSearch(area, (name) => updateForm({ ingredient: name }));
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -76,35 +75,47 @@ function StepTwo() {
               </span>
             )}
           </label>
-          <input
-            id="ingredient"
-            type="text"
-            value={term}
-            autoComplete="off"
-            onChange={(e) => setTerm(e.target.value)}
-            placeholder={searchLoading ? "Loading…" : "e.g. Chicken, Salmon…"}
-            disabled={searchLoading}
-            className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50"
-          />
-          {suggestions.length > 0 && (
-            <ul
-              role="listbox"
-              aria-label="Ingredient suggestions"
-              className="border border-neutral-100 rounded-xl mt-1 bg-white overflow-hidden shadow-sm"
-            >
-              {suggestions.map((s) => (
-                <li
-                  key={s.strIngredient}
-                  role="option"
-                  aria-selected={ingredient === s.strIngredient}
-                  onClick={() => selectIngredient(s.strIngredient)}
-                  className="px-4 py-2 text-sm hover:bg-orange-50 cursor-pointer"
-                >
-                  {s.strIngredient}
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="relative">
+            <input
+              id="ingredient"
+              type="text"
+              value={term}
+              autoComplete="off"
+              role="combobox"
+              aria-expanded={suggestions.length > 0}
+              aria-controls="ingredient-listbox"
+              aria-activedescendant={
+                activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined
+              }
+              onChange={(e) => setTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={() => setTimeout(closeSuggestions, 150)}
+              placeholder={searchLoading ? "Loading…" : "e.g. Chicken, Salmon…"}
+              disabled={searchLoading}
+              className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50"
+            />
+            {suggestions.length > 0 && (
+              <ul
+                id="ingredient-listbox"
+                role="listbox"
+                aria-label="Ingredient suggestions"
+                className="absolute z-10 w-full border border-neutral-100 rounded-xl mt-1 bg-white overflow-hidden shadow-sm"
+              >
+                {suggestions.map((s, i) => (
+                  <li
+                    key={s.strIngredient}
+                    id={`suggestion-${i}`}
+                    role="option"
+                    aria-selected={i === activeIndex}
+                    onMouseDown={() => onSelect(s.strIngredient)}
+                    className={`px-4 py-2 text-sm cursor-pointer ${i === activeIndex ? "bg-orange-50 text-orange-700" : "hover:bg-orange-50"}`}
+                  >
+                    {s.strIngredient}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
         {noResults && (
           <p className="text-sm text-neutral-500">
