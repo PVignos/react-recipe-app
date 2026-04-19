@@ -6,6 +6,7 @@ import type { Meal } from "../types/meal";
 import Spinner from "../components/ui/Spinner";
 import RecipeCard from "../components/recipe/RecipeCard";
 import { useNavigate, useParams } from "react-router-dom";
+import PageLayout from "../components/common/PageLayout";
 
 function RecipePage() {
   const { id } = useParams<{ id: string }>();
@@ -46,9 +47,9 @@ function RecipePage() {
   }
 
   return (
-    <main className="mx-auto max-w-lg px-4 py-12">
+    <PageLayout title={recipe.strMeal} backTo="/" backLabel="Back to wizard">
       <RecipeCard recipe={recipe} />
-    </main>
+    </PageLayout>
   );
 }
 

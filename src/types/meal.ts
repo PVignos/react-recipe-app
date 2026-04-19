@@ -58,8 +58,10 @@ export const Step = {
 export type Step = (typeof Step)[keyof typeof Step];
 
 // HistoryFilter
-export enum HistoryFilter {
-  All = "all",
-  Liked = "liked",
-  Disliked = "disliked",
-}
+export const HistoryFilter = {
+  All: "all",
+  Liked: "liked",
+  Disliked: "disliked",
+} as const;
+
+export type HistoryFilter = (typeof HistoryFilter)[keyof typeof HistoryFilter];

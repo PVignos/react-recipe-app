@@ -3,6 +3,7 @@ import { useSeoMeta } from "../hooks/useSeoMeta";
 import StepOne from "../components/wizard/StepOne";
 import { Step } from "../types/meal";
 import StepTwo from "../components/wizard/StepTwo";
+import PageLayout from "../components/common/PageLayout";
 
 function WizardPage() {
   const step = useAppStore((s) => s.step);
@@ -12,13 +13,10 @@ function WizardPage() {
       "Pick a cuisine and an ingredient to get a personalised recipe.",
   });
   return (
-    <main className="mx-auto max-w-lg px-4 py-12">
-      <h1 className="text-2xl font-semibold text-neutral-800 mb-8">
-        Find a Recipe
-      </h1>
+    <PageLayout title="Find a Recipe">
       {step === Step.One && <StepOne />}
       {step === Step.Two && <StepTwo />}
-    </main>
+    </PageLayout>
   );
 }
 
