@@ -4,6 +4,7 @@ import type { Area } from "../../types/meal";
 import { QK } from "../../services/query";
 import { mealApi } from "../../services/meal";
 import Spinner from "../ui/Spinner";
+import Toast from "../ui/Toast";
 
 function StepOne() {
   const area = useAppStore((s) => s.formData.area);
@@ -14,6 +15,7 @@ function StepOne() {
     data: areas = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery<Area[]>({
     queryKey: QK.areas,
     queryFn: mealApi.listAreas,
@@ -26,43 +28,49 @@ function StepOne() {
   };
 
   if (isLoading) return <Spinner />;
-  if (isError)
-    return <p className="text-sm text-red-500">Failed to load cuisines.</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
-        Step 1 of 2
-      </p>
-      <div className="space-y-2">
-        <label
-          htmlFor="area"
-          className="block text-sm font-medium text-neutral-700"
+    <>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+          Step 1 of 2
+        </p>
+        <div className="space-y-2">
+          <label
+            htmlFor="area"
+            className="block text-sm font-medium text-neutral-700"
+          >
+            Choose a cuisine
+          </label>
+          <select
+            id="area"
+            value={area}
+            onChange={(e) => updateForm({ area: e.target.value })}
+            className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+          >
+            <option value="">Select a cuisine…</option>
+            {areas.map((a) => (
+              <option key={a.strArea} value={a.strArea}>
+                {a.strArea}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button
+          type="submit"
+          disabled={!area}
+          className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors"
         >
-          Choose a cuisine
-        </label>
-        <select
-          id="area"
-          value={area}
-          onChange={(e) => updateForm({ area: e.target.value })}
-          className="w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
-        >
-          <option value="">Select a cuisine…</option>
-          {areas.map((a) => (
-            <option key={a.strArea} value={a.strArea}>
-              {a.strArea}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button
-        type="submit"
-        disabled={!area}
-        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors"
-      >
-        Next
-      </button>
-    </form>
+          Next
+        </button>
+      </form>
+      {isError && (
+        <Toast
+          message="Failed to load cuisines. Please try again."
+          onDismiss={() => refetch()}
+        />
+      )}
+    </>
   );
 }
 
