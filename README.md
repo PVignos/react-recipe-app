@@ -1,16 +1,27 @@
-# React + Vite
+# Recipe Recommender
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React app that suggests recipes based on a area and an ingredient you choose.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+pnpm install
+pnpm dev
+```
 
-## React Compiler
+Requires Node 18+. No API key needed — data comes from [TheMealDB](https://www.themealdb.com/api.php).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## How it works
 
-## Expanding the ESLint configuration
+Pick a cuisine in step 1, then search for an ingredient in step 2. The app finds recipes that match both, picks one, and lets you rate it. Ratings are saved in localStorage and visible in the History page.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+A few things worth noting:
+
+- The ingredient field is a live autocomplete — it filters as you type, pulled from `/list.php?i=list` (one request, cached forever).
+- "New Idea" cycles through all matching recipes for the same criteria before repeating.
+- Each recipe has its own URL, so you can share or bookmark it directly.
+- History supports Liked / Disliked / All filtering.
+
+## Stack
+
+React, TypeScript, Vite, Zustand, TanStack Query, Tailwind.
