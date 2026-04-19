@@ -1,4 +1,4 @@
-import { persist } from "zustand/middleware/persist";
+import { persist } from "zustand/middleware";
 import { create } from "zustand";
 import type { HistoryEntry } from "../types/meal.js";
 

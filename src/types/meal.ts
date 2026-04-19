@@ -34,11 +34,7 @@ export interface Area {
 
 // Ingredient
 export interface Ingredient {
-  idIngredient: string;
   strIngredient: string;
-  strDescription: string | null;
-  strThumb: string;
-  strType: string | null;
 }
 
 // History entry (saved in localstorage)

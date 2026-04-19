@@ -1,9 +1,17 @@
-import type { Area, Ingredient, Meal, MealSummary } from "../types/meal.js";
+import type { Area, Meal, MealSummary } from "../types/meal.js";
 
 const BASE_URL = "https://www.themealdb.com/api/json/v1/1";
 
 interface ApiResponse<T> {
   meals: T[] | null;
+}
+
+interface RawIngredient {
+  strIngredient: string;
+  idIngredient?: string;
+  strDescription?: string | null;
+  strThumb?: string;
+  strType?: string | null;
 }
 
 async function get<T>(path: string): Promise<T[]> {
@@ -21,8 +29,8 @@ async function get<T>(path: string): Promise<T[]> {
 export const mealApi = {
   // List all Area, Ingredient
   listAreas: (): Promise<Area[]> => get<Area>("/list.php?a=list"),
-  listIngredients: (): Promise<Ingredient[]> =>
-    get<Ingredient>("/list.php?i=list"),
+  listIngredients: (): Promise<RawIngredient[]> =>
+    get<RawIngredient>("/list.php?i=list"),
   // Filter by Area, Ingredient
   filterByArea: (a: string): Promise<MealSummary[]> =>
     get<MealSummary>(`/filter.php?a=${a}`),

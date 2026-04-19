@@ -7,7 +7,7 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "moduleResolution": "bundler",
+    //    "moduleResolution": "bundler",
     "module": "ESNext",
     "target": "esnext",
     "types": [],

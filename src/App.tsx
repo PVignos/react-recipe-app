@@ -1,8 +1,8 @@
 import ErrorBoundary from "./components/ui/ErrorBoundary";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Spinner from "./components/ui/Spinner.tsx";
-import NavBar from "./components/common/NavBar.tsx";
+import NavBar from "./components/common/NavBar";
+import Spinner from "./components/ui/Spinner";
 
 // Lazy load pages — each becomes its own JS chunk.
 const WizardPage = lazy(() => import("./pages/WizardPage"));
