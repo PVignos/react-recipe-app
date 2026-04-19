@@ -16,7 +16,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
 
   const handleNext = () => {
     const next = nextRecipe();
-    if (next) navigate(`/recipe/${next.idMeal}`, { replace: true });
+    if (next) navigate(`/recipe/${next.idMeal}`);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store/useAppStore";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useMealSearch } from "../../hooks/useMealSearch";
 import { getSuggestions } from "../../services/suggestion";
 import Spinner from "../ui/Spinner";
@@ -30,7 +30,7 @@ function StepTwo() {
     closeSuggestions,
   } = useMealSearch((name) => updateForm({ ingredient: name }));
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!ingredient || loading) return;
 
@@ -84,7 +84,9 @@ function StepTwo() {
                 activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined
               }
               onChange={(e) => setTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onKeyDown={(e) => {
+                handleKeyDown(e);
+              }}
               onBlur={() => setTimeout(closeSuggestions, 150)}
               placeholder={
                 searchLoading ? "Loading..." : "e.g. Chicken, Salmon..."
