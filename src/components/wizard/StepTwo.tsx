@@ -99,7 +99,7 @@ function StepTwo() {
                 id="ingredient-listbox"
                 role="listbox"
                 aria-label="Ingredient suggestions"
-                className="absolute z-10 w-full border border-neutral-100 rounded-xl mt-1 bg-white overflow-hidden shadow-sm"
+                className="w-full border border-neutral-100 rounded-xl mt-1 bg-white overflow-hidden shadow-sm"
               >
                 {suggestions.map((s, i) => (
                   <li
