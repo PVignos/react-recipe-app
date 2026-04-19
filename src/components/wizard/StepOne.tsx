@@ -4,8 +4,8 @@ import type { Area, Ingredient } from "../../types/meal";
 import { QK } from "../../services/query";
 import { mealApi } from "../../services/meal";
 import Spinner from "../ui/Spinner";
-import { queryClient } from "../../main";
 import { fetchIngredientsForArea } from "../../hooks/useMealSearch";
+import { queryClient } from "../../services/queryClient";
 
 function StepOne() {
   const area = useAppStore((s) => s.formData.area);
