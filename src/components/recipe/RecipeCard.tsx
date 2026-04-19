@@ -41,15 +41,29 @@ function RecipeCard({ recipe }: RecipeCardProps) {
           {recipe.strArea} · {recipe.strCategory}
         </p>
       </div>
-      {recipe.strYoutube && (
-        <a
-          href={recipe.strYoutube}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-block text-sm text-orange-500 hover:underline"
-        >
-          Watch on YouTube →
-        </a>
+      {(recipe.strSource || recipe.strYoutube) && (
+        <div className="flex flex-wrap justify-between gap-3">
+          {recipe.strSource && (
+            <a
+              href={recipe.strSource}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block text-sm text-orange-500 hover:underline"
+            >
+              &#128279; View full recipe →
+            </a>
+          )}
+          {recipe.strYoutube && (
+            <a
+              href={recipe.strYoutube}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block text-sm text-neutral-400 hover:underline"
+            >
+              &#9654; Watch on YouTube →
+            </a>
+          )}
+        </div>
       )}
       <Feedback recipe={recipe} />
       <div className="flex gap-3 pt-2">
