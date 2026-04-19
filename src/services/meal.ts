@@ -23,6 +23,10 @@ async function get<T>(path: string): Promise<T[]> {
 
   const data: ApiResponse<T> = await res.json();
 
+  if (!data.meals || typeof data.meals === "string") {
+    throw new Error(`Invalid response: ${path}`);
+  }
+
   return data.meals ?? [];
 }
 
