@@ -74,7 +74,7 @@ function HistoryPage() {
                   className="flex gap-3 items-center p-2 rounded-xl hover:bg-white transition-colors group"
                 >
                   <img
-                    src={e.thumb}
+                    src={e.thumb || undefined}
                     alt={e.title}
                     loading="lazy"
                     className="w-12 h-12 rounded-lg object-cover shrink-0 bg-neutral-100"
