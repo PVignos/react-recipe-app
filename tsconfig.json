@@ -10,7 +10,7 @@
     //    "moduleResolution": "bundler",
     "module": "ESNext",
     "target": "esnext",
-    "types": [],
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     // For nodejs:
     "lib": ["esnext", "dom"],
     // "types": ["node"],
