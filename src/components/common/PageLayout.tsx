@@ -17,7 +17,7 @@ function PageLayout({
   const navigate = useNavigate();
 
   return (
-    <main className="mx-auto max-w-lg px-4 py-10">
+    <main className="mx-auto max-w-lg px-4 py-10 min-h-screen">
       {backTo && (
         <button
           onClick={() => navigate(backTo)}
