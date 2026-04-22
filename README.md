@@ -25,3 +25,34 @@ A few things worth noting:
 ## Stack
 
 React, TypeScript, Vite, Zustand, TanStack Query, Tailwind.
+
+## Testing
+
+```bash
+pnpm test        # watch mode
+pnpm test --run  # single run
+```
+
+Tests are written with Vitest + React Testing Library.
+
+Focus is on behavior, not implementation:
+
+- user interactions and visible UI changes
+- API results reflected in the interface
+- core store and service logic
+
+Rules:
+
+- prefer `getByRole` and `userEvent`
+- mock only external boundaries (APIs, network)
+- avoid testing styles, DOM structure, or internal implementation
+- keep each test focused on a single behavior
+
+## Deploy
+
+```bash
+pnpm build    # outputs to dist/
+pnpm preview  # preview the production build locally
+```
+
+The app is a static SPA — no server required. Upload the contents of `dist/` to any static host and configure it to redirect all routes to `index.html`.
